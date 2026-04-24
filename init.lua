@@ -135,25 +135,25 @@ vim.lsp.config("cssls", {
 
 require("gitsigns").setup({})
 
-require("everforest").setup({
-	background = "medium",
-	transparent_background_level = 2,
-	italics = true,
-	disable_italic_comments = false,
-	sign_column_background = "none",
-	ui_contrast = "low",
-	dim_inactive_windows = false,
-	diagnostic_text_highlight = false,
-	diagnostic_virtual_text = "coloured",
-	diagnostic_line_highlight = false,
-	spell_foreground = false,
-	show_eob = true,
-	float_style = "bright",
-	inlay_hints_background = "none",
-	on_highlights = function(highlight_groups, palette) end,
-	colours_override = function(palette) end,
-})
-require("everforest").load()
+--require("everforest").setup({
+--	background = "medium",
+--	transparent_background_level = 2,
+--	italics = true,
+--	disable_italic_comments = false,
+--	sign_column_background = "none",
+--	ui_contrast = "low",
+--	dim_inactive_windows = false,
+--	diagnostic_text_highlight = false,
+--	diagnostic_virtual_text = "coloured",
+--	diagnostic_line_highlight = false,
+--	spell_foreground = false,
+--	show_eob = true,
+--	float_style = "bright",
+--	inlay_hints_background = "none",
+--	on_highlights = function(highlight_groups, palette) end,
+--	colours_override = function(palette) end,
+--})
+--require("everforest").load()
 
 require('nvim-autopairs').setup()
 
@@ -274,3 +274,34 @@ vim.g.loaded_netrw             = 1
 vim.g.loaded_netrwPlugin       = 1
 vim.g.loaded_netrwSettings     = 1
 vim.g.loaded_netrwFileHandlers = 1
+
+-- Default options:
+require('kanagawa').setup({
+    compile = false,             -- enable compiling the colorscheme
+    undercurl = true,            -- enable undercurls
+    commentStyle = { italic = true },
+    functionStyle = {},
+    keywordStyle = { italic = true},
+    statementStyle = { bold = true },
+    typeStyle = {},
+    transparent = true,         -- do not set background color
+    dimInactive = false,         -- dim inactive window `:h hl-NormalNC`
+    terminalColors = true,       -- define vim.g.terminal_color_{0,17}
+    colors = {                   -- add/modify theme and palette colors
+        palette = {},
+        theme = { wave = {}, lotus = {}, dragon = {}, all = {} },
+    },
+    overrides = function(colors) -- add/modify highlights
+        return {
+			LineNr = { bg = "none" },
+		}
+    end,
+    theme = "wave",              -- Load "wave" theme
+    background = {               -- map the value of 'background' option to a theme
+        dark = "wave",           -- try "dragon" !
+        light = "lotus"
+    },
+})
+
+-- setup must be called before loading
+vim.cmd("colorscheme kanagawa")
