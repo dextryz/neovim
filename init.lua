@@ -92,7 +92,32 @@ vim.lsp.enable({
 	"templ",
 	"cssls",
 	"cssmodules_ls",
+	"rust_analyzer",
 })
+
+--vim.lsp.config("rust_analyzer", {})
+
+--vim.lsp.config("rust_analyzer", {
+--  settings = {
+--    ["rust-analyzer"] = {
+--      cargo = {
+--        allFeatures = true,
+--        loadOutDirsFromCheck = true,
+--      },
+--      check = {
+--        command = "clippy",          -- use clippy instead of just `cargo check`
+--      },
+--      procMacro = {
+--        enable = true,
+--      },
+--      inlayHints = {
+--        lifetimeElisionHints = {
+--          enable = "always",
+--        },
+--      },
+--    },
+--  },
+--})
 
 vim.lsp.config("basedpyright", {
     settings = {
@@ -450,7 +475,7 @@ require("rose-pine").setup({
         -- Comment = { fg = "foam" },
         -- StatusLine = { fg = "love", bg = "love", blend = 15 },
         -- VertSplit = { fg = "muted", bg = "muted" },
-        Visual = { fg = "base", bg = "text", inherit = false },
+        --Visual = { fg = "base", bg = "text", inherit = false },
     },
 
     before_highlight = function(group, highlight, palette)
