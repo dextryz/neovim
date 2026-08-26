@@ -12,7 +12,7 @@ vim.opt.relativenumber = true
 vim.opt.expandtab      = false
 vim.opt.swapfile       = false
 vim.opt.tabstop        = 4
-vim.opt.shiftwidth     = 4  -- removed duplicate
+vim.opt.shiftwidth     = 4
 vim.opt.softtabstop    = 4
 vim.opt.clipboard      = "unnamedplus"
 vim.o.showcmd          = false
@@ -93,6 +93,8 @@ vim.lsp.enable({
 	"cssls",
 	"cssmodules_ls",
 	"rust_analyzer",
+	"clangd",
+	"verible",
 })
 
 --vim.lsp.config("rust_analyzer", {})
@@ -118,6 +120,16 @@ vim.lsp.enable({
 --    },
 --  },
 --})
+
+vim.lsp.config('clangd', {
+	cmd = { 'clangd', '--background-index', '--clang-tidy=false' },
+})
+
+vim.lsp.config('verible', {
+	cmd = { 'verible-verilog-ls', '--rules_config_search' },
+	filetypes = { 'verilog', 'systemverilog' },
+	root_markers = { '.git', '.jj', 'hls_config.cfg' },
+})
 
 vim.lsp.config("basedpyright", {
     settings = {
@@ -261,6 +273,24 @@ vim.api.nvim_create_autocmd("BufWritePre", {
     pattern  = "*.zig",
     callback = function()
         vim.lsp.buf.format({ name = "zls" })
+    end,
+})
+
+-- Format Verilog/SystemVerilog on save via verible
+vim.api.nvim_create_autocmd("BufWritePre", {
+    pattern  = { "*.v", "*.sv", "*.svh" },
+    callback = function()
+        vim.lsp.buf.format({ name = "verible" })
+    end,
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = { "verilog", "systemverilog" },
+    callback = function()
+        vim.opt_local.expandtab   = true
+        vim.opt_local.tabstop     = 2
+        vim.opt_local.shiftwidth  = 2
+        vim.opt_local.softtabstop = 2
     end,
 })
 
@@ -509,3 +539,11 @@ vim.api.nvim_create_autocmd("ColorScheme", {
   callback = transparent,
 })
 --vim.cmd("colorscheme iceberg")
+
+-- Never continue comments on Enter / o / O, any filetype
+vim.api.nvim_create_autocmd("BufWinEnter", {
+    group    = vim.api.nvim_create_augroup("no-comment-continue", { clear = true }),
+    callback = function()
+        vim.opt_local.formatoptions:remove({ "r", "o" })
+    end,
+})
